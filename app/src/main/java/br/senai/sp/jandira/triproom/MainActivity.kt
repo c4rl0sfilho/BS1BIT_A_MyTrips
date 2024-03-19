@@ -2,6 +2,7 @@ package br.senai.sp.jandira.triproom
 
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.speech.ModelDownloadListener
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -19,7 +20,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -28,12 +32,15 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Snowboarding
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,11 +54,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 class MainActivity : ComponentActivity() {
@@ -251,19 +260,19 @@ fun SignUp () {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                    .height(100.dp)
+                        .height(100.dp)
                         .width(100.dp)
-                    .border(
-                        BorderStroke(
-                            2.dp, Brush.horizontalGradient(
-                                0.2f to Color(0xffCF06F0),
-                                0.6f to Color.White,
-                                0.4f to Color.White,
-                                startX = 0.0f,
-                                endX = 430.0f
-                            )
-                        ), shape = RoundedCornerShape(360.dp)
-                    )
+                        .border(
+                            BorderStroke(
+                                2.dp, Brush.horizontalGradient(
+                                    0.2f to Color(0xffCF06F0),
+                                    0.6f to Color.White,
+                                    0.4f to Color.White,
+                                    startX = 0.0f,
+                                    endX = 430.0f
+                                )
+                            ), shape = RoundedCornerShape(360.dp)
+                        )
                     //.background(color = Color.White)
                     ) {
                     androidx.compose.material3.Icon(
@@ -451,6 +460,65 @@ fun SignUp () {
     }
 }
 
+
+@Composable
+fun Homescreen (){
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            shape = RoundedCornerShape(0.dp)
+        ) {
+            Image(painter = painterResource(
+                id = R.drawable.paris),
+                contentDescription = "Paris",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
+        Text(text = "Categorias")
+        LazyRow{
+            items(3){
+                Card(
+                    modifier = Modifier
+                        .size(height = 90.dp, width = 120.dp)
+                        .padding(4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xffCF06F0)),
+
+                ) {
+                    Column {
+                        androidx.compose.material3.Icon(
+                            imageVector = Icons.Filled.Snowboarding,
+                            contentDescription = ""
+                        )
+                        Text(text = "Snow")
+
+                    }
+                }
+            }
+        }
+        OutlinedTextField(value = "", onValueChange = {})
+        Text(text = "Past Trips")
+        LazyColumn{
+            items(2){
+                Card(
+                    modifier = Modifier
+                        .size(height = 200.dp, width = 350.dp)
+                        .padding(4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFFFF)),
+                ) {
+
+                }
+            }
+        }
+    }
+
+}
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
@@ -463,5 +531,11 @@ fun GreetingPreview() {
 fun SignUpPreview() {
     TripRoomTheme {
         SignUp()
+    }
+}@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun HomescreenPreview() {
+    TripRoomTheme {
+        Homescreen()
     }
 }
