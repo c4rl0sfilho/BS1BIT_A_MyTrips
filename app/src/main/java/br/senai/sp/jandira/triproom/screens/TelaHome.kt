@@ -20,6 +20,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,11 +29,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.triproom.R
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 @Composable
-fun Homescreen (){
+fun TelaHome (controleDeNavegacao: NavHostController){
+
+    var pesquisaState = remember{
+        mutableStateOf("")
+    }
+
+
+
     TripRoomTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -135,5 +145,9 @@ fun Homescreen (){
             }
 
         }
+
+
+
+
         }
     }
