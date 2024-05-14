@@ -1,16 +1,22 @@
 package br.senai.sp.jandira.triproom.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Snowboarding
 import androidx.compose.material3.Card
@@ -27,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -63,7 +70,70 @@ fun TelaHome (controleDeNavegacao: NavHostController){
                         modifier = Modifier
                             .fillMaxSize()
                     )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.porto),
+                                contentDescription = "imagem usuario",
+                                modifier = Modifier
+                                    .size(width = 70.dp, height = 70.dp)
+                            )
+                            Text(
+                                text = "Susanna Hoffs",
+                                color = Color.White,
+                                modifier = Modifier
+                                    .offset(x = -18.dp, y = 6.dp)
+                            )
+                        }
+
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Bottom,
+                        modifier = Modifier
+                            .width(200.dp)
+                            .fillMaxHeight()
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier
+                                .offset(x = 0.dp, y = -3.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .offset(x = 0.dp, y = 10.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.LocationOn,
+                                    contentDescription = null,
+                                    tint = Color.White
+                                )
+                                Text(
+                                    text = "You're in Paris",
+                                    color = Color.White,
+                                )
+                            }
+                            Text(
+                                text = "My Trips",
+                                fontSize = 30.sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                    }
+
                 }
+
                 Text(text = "Categorias")
                 LazyRow{
                     items(3){

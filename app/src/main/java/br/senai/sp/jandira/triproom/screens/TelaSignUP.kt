@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,10 +45,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import br.senai.sp.jandira.triproom.R
+import br.senai.sp.jandira.triproom.model.Usuarios
+import br.senai.sp.jandira.triproom.repository.UsuariosRepository
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 @Composable
 fun TelaSignUp (controleDeNavegacao: NavHostController) {
+
+    val cr = UsuariosRepository(LocalContext.current)
 
     var usuarioState = remember {
         mutableStateOf("")
@@ -61,7 +66,7 @@ fun TelaSignUp (controleDeNavegacao: NavHostController) {
     var senhaState = remember {
         mutableStateOf("")
     }
-    var maioridadeState = remember {
+    var adultState = remember {
         mutableStateOf(false)
     }
     var isErrorState = remember {
@@ -271,10 +276,10 @@ fun TelaSignUp (controleDeNavegacao: NavHostController) {
                         .align(Alignment.Start)
                 ) {
                     Checkbox(
-                        checked = maioridadeState.value,
+                        checked = adultState.value,
 
                         onCheckedChange = {
-                            maioridadeState.value = true
+                            adultState.value = true
                         })
                     Text(
                         text = "Over 18?",
@@ -283,7 +288,23 @@ fun TelaSignUp (controleDeNavegacao: NavHostController) {
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
-                    onClick = {controleDeNavegacao.navigate("home")},
+                    onClick = {
+                              //cria um objeto usuario
+                              val usuario = Usuarios(
+                                nome = usuarioState.value,
+                                email = emailState.value,
+                                telefone = numeroState.value,
+                                password = senhaState.value,
+                                isAdult = adultState.value
+                                      )
+                        if (usuarioState.value == "" || emailState.value == "" || numeroState.value == "" || senhaState.value == ""){
+                            isErrorState.value = true
+                        }else{
+                            cr.salvar(usuario)
+                            controleDeNavegacao.navigate("login")
+                        }
+
+                    },
                     colors = ButtonDefaults.buttonColors(Color(0xffCF06F0)),
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier

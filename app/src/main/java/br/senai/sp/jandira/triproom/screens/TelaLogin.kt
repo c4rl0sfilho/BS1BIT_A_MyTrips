@@ -27,18 +27,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import br.senai.sp.jandira.triproom.repository.UsuariosRepository
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 import androidx.compose.material3.Icon as Icon
 
 @Composable
 fun TelaLogin(controleDeNavegacao: NavHostController) {
 
+    var cr = UsuariosRepository(LocalContext.current)
+    var listarUsuarios = cr.buscarTodosOsUsuarios()
+
+
     var usuarioState = remember {
+        mutableStateOf("")
+    }
+    var emailState = remember {
         mutableStateOf("")
     }
     var senhaState = remember{
@@ -86,9 +95,9 @@ fun TelaLogin(controleDeNavegacao: NavHostController) {
                 )
                 Spacer(modifier = Modifier.height(60.dp))
                 OutlinedTextField(
-                    value = usuarioState.value,
+                    value = emailState.value,
                     onValueChange = {
-                        usuarioState.value = it
+                        emailState.value = it
                     },
                     isError = isErrorState.value,
                     modifier = Modifier
@@ -143,16 +152,20 @@ fun TelaLogin(controleDeNavegacao: NavHostController) {
                         )
                     }
                 )
-                Text(text = mensagemErroState.value, color = Color.Red)
+                Text(text = mensagemErroState.value, color = Color.Red,
+                    modifier = Modifier
+                    .padding(start = 24.dp, end = 24.dp)
+                    .fillMaxWidth(),)
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     onClick = {
-                        if (usuarioState.value == "aluno" && senhaState.value == "1234"){
-                        controleDeNavegacao.navigate("home")
-                    }else{
-                        isErrorState.value == true
-                        mensagemErroState.value = "Usuario ou senha invalidos"
-                    }},
+                        var usuario = cr.login(emailState.value,senhaState.value)
+                        if(true){
+                            controleDeNavegacao.navigate("home")
+                        } else {
+                            mensagemErroState.value = "Usuario ou Senha Incorretos"
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(Color(0xffCF06F0)),
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
@@ -177,8 +190,7 @@ fun TelaLogin(controleDeNavegacao: NavHostController) {
                         color = Color(0xffA09C9C)
                     )
                     Text(
-                        text = "Sign up",
-                        fontWeight = FontWeight.Bold,
+                        text = "Sign up", fontWeight = FontWeight.Bold,
                         color = Color(0xffCF06F0),
                         modifier = Modifier.clickable { controleDeNavegacao.navigate("signUp")}
                     )
